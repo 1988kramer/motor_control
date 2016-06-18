@@ -36,7 +36,7 @@ Motor::setStop()
 	digitalWrite(_dir2, HIGH);
 }
 
-Motor::setPWM(uint8_t level)
+Motor::setPWM(int level)
 {
 	analogWrite(_pwm, level);
 }

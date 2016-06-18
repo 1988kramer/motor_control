@@ -16,7 +16,7 @@ public:
 	void setBack();
 	void setFree();
 	void setStop();
-	void setPWM();
+	void setPWM(int level);
 private:
 	int _dir1, _dir2, _pwm;
 };
