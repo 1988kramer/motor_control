@@ -26,8 +26,10 @@ SpeedControl::SpeedControl(Motor motor, Encoder encoder)
 
 	_setPoint = 0;
 	_minSpeed = DEFAULT_MIN_SPEED;
-
-	TimerOne.initialize(100000);
+	
+	// timer must be initialized outside of this class
+	// when motor object is created
+	// use same deltaT for both
 	TimerOne.attachInterupt(adjustPWM);
 }
 
