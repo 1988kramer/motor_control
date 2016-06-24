@@ -11,6 +11,8 @@
 #include<Motor.h>
 #include<Encoder.h>
 
+#define DEFAULT_MIN_SPEED 10
+
 SpeedControl::SpeedControl(Motor motor, Encoder encoder)
 {
 	_encoder = encoder;
@@ -23,6 +25,7 @@ SpeedControl::SpeedControl(Motor motor, Encoder encoder)
 	_kD = 1;
 
 	_setPoint = 0;
+	_minSpeed = DEFAULT_MIN_SPEED;
 
 	TimerOne.initialize(100000);
 	TimerOne.attachInterupt(adjustPWM);
@@ -33,6 +36,11 @@ SpeedControl::SetGains(int kP, int kI, int kD)
 	_kP = kP;
 	_kI = kI;
 	_kD = kD;
+}
+
+SpeedControl::setMinSpeed(int minSpeed)
+{
+	_minSpeed = minSpeed;
 }
 
 SpeedControl::setSpeed(int speed)
@@ -46,7 +54,10 @@ SpeedControl::setSpeed(int speed)
 	{
 		motor.setFwd();
 	}
-	_setPoint = speed;
+	if (speed < _minSpeed && speed > 0)
+		_setPoint = _minSpeed;
+	else
+		_setPoint = speed;
 }
 
 SpeedControl::getDistance()
