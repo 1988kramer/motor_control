@@ -20,6 +20,9 @@ PositionControl::setSpeed(int speed)
 	_speedControl.setSpeed(speed);
 }
 
+// rotates motor by the specified number of degrees at the 
+// specified speed
+// does not currently correct for overshoot
 PositionControl::rotate(int degrees, int speed)
 {
 	_distance += _speedControl.getDistance();
@@ -28,11 +31,15 @@ PositionControl::rotate(int degrees, int speed)
 	int error = degrees;
 	while (error > 0)
 	{
-		error -= _speedControl.getDistance();
-		int curSpeed = (double)speed * ((double)error / (double)degrees);
-		_speedControl.setSpeed(curSpeed);
+		int tempDistance = _speedControl.getDistance();
+		error -= tempDistance;
+		_distance += tempDistance;
+		double kP = (double)error / (double)degrees;
+		int curSpeed = (double)speed * kP;
+		(kP > 0.25) ? _speedControl.setSpeed(speed) : _speedControl.setSpeed(curSpeed);
 		delay(100); // probably need better way to delay
 	}
+	_speedControl.setSpeed(0);
 }
 
 PositionControl::getDistance()
