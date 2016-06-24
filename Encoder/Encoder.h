@@ -15,12 +15,14 @@
 class Encoder
 {
 public:
-	Encoder(int encoderA, int encoderB, int &count, int deltaT);
+	Encoder(int encoderA, int encoderB, int &count, 
+			int deltaT, int ticksPerRev);
 	void resetCount();
-	int getSpeed(); // returns speed in ticks per second
-	long getTotalCount(); // returns total count and resets totalCount to 0
+	int getSpeed(); // returns speed in degrees per second
+	int getDistance(); // returns distance rotated in degrees
 private:
 	int _encoderA, _encoderB; // encoder pins
+	double _degPerTick; // degrees of output shaft rotation per encoder tick
 	volatile long _count;
 	int _deltaT; // in microseconds
 	long _totalCount;

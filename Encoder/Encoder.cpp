@@ -13,12 +13,14 @@
 #define INTERRUPT0 = 2
 #define INTERRUPT1 = 3
 
-Encoder::Encoder(int encoderA, int encoderB, int count, int deltaT)
+Encoder::Encoder(int encoderA, int encoderB, int count, 
+				 int deltaT, int ticksPerRev)
 {
 	_encoderA = encoderA;
 	_encoderB = encoderB;
 	_count = count;
 	_deltaT = deltaT;
+	_degPerTick = 360.0 / (double)ticksPerRev;
 	_oldCount = 0;
 	_newCount = 0;
 	_index = 0;
@@ -35,14 +37,15 @@ Encoder::getSpeed()
 	_totalCount += count;
 	resetCount();
 	double ticksPerSec = difference / (_deltaT / 1000000);
-	return (int)ticksPerSec;
+	double degPerSec = ticksPerSec * _degPerTick;
+	return (int)degPerSec;
 }
 
-Encoder::getTotalCount()
+Encoder::getDistance()
 {
-	long tempCount = totalCount;
-	totalCount = 0;
-	return tempCount;
+	int distance = _degPerTick * totalCount;
+	_totalCount = 0;
+	return distance;
 }
 
 Encoder::resetCount()

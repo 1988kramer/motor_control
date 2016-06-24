@@ -6,6 +6,7 @@
 // Brett Beauregard's PID library for arduino
 
 #include"Arduino.h"
+#include"SpeedControl.h"
 #include<TimerOne.h>
 #include<Motor.h>
 #include<Encoder.h>
@@ -37,10 +38,20 @@ SpeedControl::SetGains(int kP, int kI, int kD)
 SpeedControl::setSpeed(int speed)
 {
 	if (speed < 0)
+	{
 		motor.setBack();
+		speed *= -1;
+	}
 	else
+	{
 		motor.setFwd();
+	}
 	_setPoint = speed;
+}
+
+SpeedControl::getDistance()
+{
+	encoder.getDistance();
 }
 
 SpeedControl::adjustPWM()

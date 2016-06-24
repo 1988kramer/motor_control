@@ -16,9 +16,10 @@
 class SpeedControl
 {
 public:
-	SpeedControl(Motor motor, Encoder encoder, int &count);
+	SpeedControl(Motor motor, Encoder encoder);
 	void setGains(int kP, int kI, int kD);
-	void setSpeed(int speed); // in rad/s or degrees/s
+	void setSpeed(int speed); // in degrees/s
+	int getDistance(); // returns total distance rotated in degrees
 private:
 	int _setPoint, _lastSpeed, _pwm;
 	double _iTerm, _kP, _kI, _kD;
