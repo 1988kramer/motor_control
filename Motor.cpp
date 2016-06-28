@@ -7,9 +7,9 @@ Motor::Motor(int dir1, int dir2, int pwm)
 	_dir1 = dir1;
 	_dir2 = dir2;
 	_pwm = pwm;
-	pinMode(dir1, OUTPUT);
-	pinMode(dir2, OUTPUT);
-	pinMode(pwm, OUTPUT);
+	pinMode(_dir1, OUTPUT);
+	pinMode(_dir2, OUTPUT);
+	pinMode(_pwm, OUTPUT);
 }
 
 void Motor::setFwd()

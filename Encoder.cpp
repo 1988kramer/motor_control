@@ -24,8 +24,6 @@ Encoder::Encoder(int encoderA, int encoderB,
 	_degPerTick = 360.0 / (double)ticksPerRev;
 	pinMode(_encoderA, INPUT);
 	pinMode(_encoderB, INPUT);
-	if (_encoderA == INTERRUPT0) attachInterrupt(0, update, CHANGE);
-	if (_encoderA == INTERRUPT1) attachInterrupt(1, update, CHANGE);
 }
 
 int Encoder::getSpeed()
@@ -69,7 +67,3 @@ void Encoder::updateCount()
 	}
 }
 
-static void Encoder::update(void *object)
-{
-	return ((Encoder *) object)->updateCount();
-}

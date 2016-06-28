@@ -21,7 +21,6 @@ public:
 	int getSpeed(); // returns speed in degrees per second
 	int getDistance(); // returns distance rotated in degrees
 	void updateCount();
-	static void update();
 private:
 	int _encoderA, _encoderB; // encoder pins
 	double _degPerTick; // degrees of output shaft rotation per encoder tick
