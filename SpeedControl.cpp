@@ -64,12 +64,12 @@ int SpeedControl::getDistance()
 
 void SpeedControl::adjustPWM()
 {
-	double speed = _encoder->getSpeed(); // motor control returns vector speed
-	if (speed < 0.0) speed *= -1.0;  // convert speed to scalar
-	double error = _setPoint - speed;
-	_iTerm += (_kI * error);
+	int speed = _encoder->getSpeed(); // motor control returns vector speed
+	if (speed < 0) speed *= -1;  // convert speed to scalar
+	int error = _setPoint - speed;
+	_iTerm += (_kI * (double)error);
 	double dInput = speed - _lastSpeed;
-	int adjustment = (_kP * error) + _iTerm - (_kD * dInput);
+	int adjustment = (_kP * (double)error) + _iTerm - (_kD * dInput);
 	_pwm += adjustment;
 	constrainPWM();
 	_motor->setPWM(_pwm);
