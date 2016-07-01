@@ -26,10 +26,13 @@ Encoder::Encoder(int encoderA, int encoderB,
 	pinMode(_encoderB, INPUT);
 }
 
+// getSpeed does not work, it's not even being called
 int Encoder::getSpeed()
 {
 	// calculate number of ticks elapsed since in last deltaT
-	double difference = _count;
+	double difference = (double)_count;
+	Serial.print("reset");
+	Serial.print("\n");
 	_totalCount += _count;
 	resetCount();
 	double ticksPerSec = difference / (_deltaT / 1000000);
@@ -51,19 +54,21 @@ void Encoder::resetCount()
 
 void Encoder::updateCount()
 {
-	if (digitalRead(_encoderA == HIGH))
+	if (digitalRead(_encoderA) == HIGH)
 	{
-		if (digitalRead(_encoderB == LOW))
+		if (digitalRead(_encoderB) == LOW)
 			_count++;
 		else
 			_count--;
 	}
 	else
 	{
-		if (digitalRead(_encoderB == LOW))
+		if (digitalRead(_encoderB) == LOW)
 			_count--;
 		else
 			_count++;
 	}
+	Serial.print(_count);
+	Serial.print("\n");
 }
 
