@@ -30,28 +30,28 @@ Encoder::Encoder(int encoderA, int encoderB,
 }
 
 // calculates difference properly but does not return accurate speed
-int Encoder::getSpeed()
+double Encoder::getSpeed()
 {
 	// calculate number of ticks elapsed since in last deltaT
 	_oldCount = _newCount;
 	_newCount = _count;
-	double difference = _newCount - _oldCount;
+	int difference = _newCount - _oldCount;
 
-	Serial.println((int)difference);
+	Serial.println(difference);
 
-	_totalCount += (int)difference;
+	_totalCount += difference;
 	double degPerSec;
-	if (difference < 50000.0)
+	if (abs(difference) < 50000)
 	{
-		double ticksPerSec = difference / (_deltaT / 1000000);
+		double ticksPerSec = (double)difference / ((double)_deltaT / 1000000.0);
 		degPerSec = ticksPerSec * _degPerTick;
+		_lastSpeed = degPerSec;
 	}
-	else
+	else // if overflow has occurred in _count
 	{
 		degPerSec = _lastSpeed;
 	}
-	_lastSpeed = degPerSec;
-	return (int)degPerSec;
+	return degPerSec;
 }
 
 int Encoder::getDistance()
