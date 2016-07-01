@@ -22,8 +22,8 @@ public:
 	int getDistance(); // returns total distance rotated in degrees
 	void adjustPWM();
 private:
-	int _setPoint, _lastSpeed, _pwm, _minSpeed;
-	double _iTerm, _kP, _kI, _kD;
+	int _setPoint, _pwm, _minSpeed;
+	double _iTerm, _kP, _kI, _kD, _lastSpeed;
 	Motor *_motor;
 	Encoder *_encoder;
 	void constrainPWM();
