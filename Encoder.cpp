@@ -19,24 +19,40 @@ Encoder::Encoder(int encoderA, int encoderB,
 	_encoderA = encoderA;
 	_encoderB = encoderB;
 	_count = 0;
+	_oldCount = 0;
+	_newCount = 0;
 	_totalCount = 0;
+	_lastSpeed = 0;
 	_deltaT = deltaT;
 	_degPerTick = 360.0 / (double)ticksPerRev;
 	pinMode(_encoderA, INPUT);
 	pinMode(_encoderB, INPUT);
 }
 
-// getSpeed does not work, it's not even being called
+// calculates difference properly but does not return accurate speed
 int Encoder::getSpeed()
 {
 	// calculate number of ticks elapsed since in last deltaT
-	double difference = (double)_count;
-	Serial.print("reset");
-	Serial.print("\n");
-	_totalCount += _count;
-	resetCount();
-	double ticksPerSec = difference / (_deltaT / 1000000);
-	double degPerSec = ticksPerSec * _degPerTick;
+	_oldCount = _newCount;
+	_newCount = _count;
+	double difference;
+	if (_oldCount < _newCount) difference = _newCount - _oldCount;
+	else difference = _oldCount - _newCount;
+
+	Serial.println((int)difference);
+
+	_totalCount += (int)difference;
+	double degPerSec;
+	if (difference < 50000.0)
+	{
+		double ticksPerSec = difference / (_deltaT / 1000000);
+		degPerSec = ticksPerSec * _degPerTick;
+	}
+	else
+	{
+		degPerSec = _lastSpeed;
+	}
+	_lastSpeed = degPerSec;
 	return (int)degPerSec;
 }
 
@@ -68,7 +84,5 @@ void Encoder::updateCount()
 		else
 			_count++;
 	}
-	Serial.print(_count);
-	Serial.print("\n");
 }
 
