@@ -35,9 +35,7 @@ int Encoder::getSpeed()
 	// calculate number of ticks elapsed since in last deltaT
 	_oldCount = _newCount;
 	_newCount = _count;
-	double difference;
-	if (_oldCount < _newCount) difference = _newCount - _oldCount;
-	else difference = _oldCount - _newCount;
+	double difference = _newCount - _oldCount;
 
 	Serial.println((int)difference);
 
