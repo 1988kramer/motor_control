@@ -51,7 +51,7 @@ void SpeedControl::setSpeed(int speed)
 	{
 		_motor->setFwd();
 	}
-	if (speed < _minSpeed && speed > 0)
+	if (speed < _minSpeed)
 		_setPoint = _minSpeed;
 	else
 		_setPoint = speed;
@@ -64,7 +64,8 @@ int SpeedControl::getDistance()
 
 void SpeedControl::adjustPWM()
 {
-	int speed = _encoder->getSpeed();
+	double speed = _encoder->getSpeed(); // motor control returns vector speed
+	if (speed < 0.0) speed *= -1.0;  // convert speed to scalar
 	double error = _setPoint - speed;
 	_iTerm += (_kI * error);
 	double dInput = speed - _lastSpeed;
