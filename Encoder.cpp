@@ -30,7 +30,7 @@ Encoder::Encoder(int encoderA, int encoderB,
 }
 
 // calculates difference properly but does not return accurate speed
-double Encoder::getSpeed()
+int Encoder::getSpeed()
 {
 	// calculate number of ticks elapsed since in last deltaT
 	_oldCount = _newCount;
@@ -40,7 +40,7 @@ double Encoder::getSpeed()
 	Serial.println(difference);
 
 	_totalCount += difference;
-	double degPerSec;
+	int degPerSec;
 	if (abs(difference) < 50000)
 	{
 		double ticksPerSec = (double)difference / ((double)_deltaT / 1000000.0);
