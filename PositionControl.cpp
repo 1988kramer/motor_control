@@ -9,10 +9,18 @@
 //#include<Motor.h>
 //#include<Encoder.h>
 
+const double defaultKP = 0.5;
+
 PositionControl::PositionControl(SpeedControl *speedControl)
 {
 	_speedControl = speedControl;
 	_distance = 0;
+	_kP = defaultKP;
+}
+
+void PositionControl::setKP(double kP) 
+{
+	_kP = kP;
 }
 
 void PositionControl::setSpeed(int speed)
@@ -34,10 +42,11 @@ void PositionControl::rotate(int degrees, int speed)
 		int tempDistance = _speedControl->getDistance();
 		error -= tempDistance;
 		_distance += tempDistance;
-		double kP = (double)error / (double)degrees;
-		int curSpeed = (double)speed * kP;
-		(kP > 0.25) ? _speedControl->setSpeed(speed) : _speedControl->setSpeed(curSpeed);
-		delay(100); // probably need better way to delay
+		int adjustment = (double)error * _kP;
+		if (error < speed && adjustment < speed) 
+			speed -= adjustment;
+		_speedControl->setSpeed(speed);
+		delay(50); // probably need better way to delay
 	}
 	_speedControl->setSpeed(0);
 }

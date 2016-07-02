@@ -50,7 +50,6 @@ int Encoder::getSpeed()
 	{
 		degPerSec = _lastSpeed;
 	}
-	//Serial.println(difference);
 	return degPerSec;
 }
 
@@ -59,11 +58,6 @@ int Encoder::getDistance()
 	int distance = _degPerTick * _totalCount;
 	_totalCount = 0;
 	return distance;
-}
-
-void Encoder::resetCount()
-{
-	_count = 0;
 }
 
 void Encoder::updateCount()

@@ -17,7 +17,6 @@ class Encoder
 public:
 	Encoder(int encoderA, int encoderB, 
 			long deltaT, int ticksPerRev);
-	void resetCount();
 	int getSpeed(); // returns speed in degrees per second
 	int getDistance(); // returns distance rotated in degrees
 	void updateCount();

@@ -10,7 +10,7 @@
 #include<Motor.h>
 #include<Encoder.h>
 
-#define DEFAULT_MIN_SPEED 10
+#define DEFAULT_MIN_SPEED 60
 
 SpeedControl::SpeedControl(Motor *motor, Encoder *encoder)
 {
@@ -47,9 +47,13 @@ void SpeedControl::setSpeed(int speed)
 		_motor->setBack();
 		speed *= -1;
 	}
-	else
+	else if (speed > 0)
 	{
 		_motor->setFwd();
+	}
+	if (speed == 0)
+	{
+		_motor->setFree();
 	}
 	if (speed < _minSpeed)
 		_setPoint = _minSpeed;
@@ -65,7 +69,6 @@ int SpeedControl::getDistance()
 void SpeedControl::adjustPWM()
 {
 	int speed = _encoder->getSpeed(); // motor control returns vector speed
-	Serial.println(speed);
 	if (speed < 0) speed *= -1;  // convert speed to scalar
 	int error = _setPoint - speed;
 	_iTerm += (_kI * (double)error);

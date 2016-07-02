@@ -17,9 +17,11 @@ public:
 	void rotate(int degrees, int speed); // in degrees
 	void setSpeed(int speed); // in degrees/sec
 	int getDistance(); // returns total distance rotated in degrees
+	void setKP(double kP);
 private:
 	SpeedControl *_speedControl;
 	long _distance;
+	double _kP;
 };
 
 #endif
