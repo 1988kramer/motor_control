@@ -14,7 +14,7 @@
 #define INTERRUPT1 3
 
 Encoder::Encoder(int encoderA, int encoderB, 
-				 int deltaT, int ticksPerRev)
+				 long deltaT, int ticksPerRev)
 {
 	_encoderA = encoderA;
 	_encoderB = encoderB;
@@ -36,14 +36,13 @@ int Encoder::getSpeed()
 	_oldCount = _newCount;
 	_newCount = _count;
 	int difference = _newCount - _oldCount;
-
-	Serial.println(difference);
-
+	
 	_totalCount += difference;
 	int degPerSec;
-	if (abs(difference) < 50000)
+	if (difference < 50000 && difference > -50000)
 	{
-		double ticksPerSec = (double)difference / ((double)_deltaT / 1000000.0);
+		double deltaTInSec = 1000000 / _deltaT;
+		double ticksPerSec = (double)difference * (double)deltaTInSec;
 		degPerSec = ticksPerSec * _degPerTick;
 		_lastSpeed = degPerSec;
 	}
@@ -51,6 +50,7 @@ int Encoder::getSpeed()
 	{
 		degPerSec = _lastSpeed;
 	}
+	//Serial.println(difference);
 	return degPerSec;
 }
 

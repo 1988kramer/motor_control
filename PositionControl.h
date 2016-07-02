@@ -8,16 +8,17 @@
 #define PositionControl_h
 
 #include"Arduino.h"
+#include<SpeedControl.h>
 
 class PositionControl
 {
 public:
-	PositionControl(SpeedControl speedControl);
+	PositionControl(SpeedControl *speedControl);
 	void rotate(int degrees, int speed); // in degrees
 	void setSpeed(int speed); // in degrees/sec
 	int getDistance(); // returns total distance rotated in degrees
 private:
-	SpeedControl _speedControl;
+	SpeedControl *_speedControl;
 	long _distance;
 };
 

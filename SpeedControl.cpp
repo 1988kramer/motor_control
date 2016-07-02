@@ -65,6 +65,7 @@ int SpeedControl::getDistance()
 void SpeedControl::adjustPWM()
 {
 	int speed = _encoder->getSpeed(); // motor control returns vector speed
+	Serial.println(speed);
 	if (speed < 0) speed *= -1;  // convert speed to scalar
 	int error = _setPoint - speed;
 	_iTerm += (_kI * (double)error);
