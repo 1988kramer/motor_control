@@ -30,7 +30,8 @@ void PositionControl::setSpeed(int speed)
 
 // rotates motor by the specified number of degrees at the 
 // specified speed
-// does not currently correct for overshoot
+// motors cannot rotate simultaneously
+// motors do not stop when rotating backward
 void PositionControl::rotate(int degrees, int speed)
 {
 	_distance += _speedControl->getDistance();
