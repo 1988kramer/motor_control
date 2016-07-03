@@ -18,10 +18,13 @@ public:
 	void setSpeed(int speed); // in degrees/sec
 	int getDistance(); // returns total distance rotated in degrees
 	void setKP(double kP);
+	void adjustPWM();
 private:
 	SpeedControl *_speedControl;
+	int _error, _speed;
 	long _distance;
 	double _kP;
+	bool _positioning;
 };
 
 #endif
