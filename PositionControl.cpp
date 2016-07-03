@@ -57,6 +57,7 @@ void PositionControl::adjustPWM()
 	if (_positioning)
 	{
 		int thisDistance = _speedControl->getDistance();
+		_distance += thisDistance;
 		if (thisDistance < 0) thisDistance *= -1;
 		_error -= thisDistance;
 		int adjustment = (double)_error * _kP;
@@ -78,5 +79,7 @@ void PositionControl::adjustPWM()
 // doesn't return correct distance
 int PositionControl::getDistance()
 {
-	return _speedControl->getDistance();
+	int tempDistance = _distance;
+	_distance = 0;
+	return tempDistance;
 }
