@@ -10,7 +10,7 @@
 #include<Motor.h>
 #include<Encoder.h>
 
-#define DEFAULT_MIN_SPEED 60
+#define DEFAULT_MIN_SPEED 75
 const double defaultGain = 1.0;
 
 // accepts a pointer to a Motor and a pointer to an Encoder as parameters
