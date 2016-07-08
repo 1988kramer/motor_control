@@ -46,6 +46,7 @@ void PositionControl::rotate(int degrees, int speed)
 			speed *= -1;
 			degrees *= -1;
 		}
+		_distance += _speedControl->getDistance();
 		_error = degrees;
 		_speed = speed;
 		_positioning = true;
