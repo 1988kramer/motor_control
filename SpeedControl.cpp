@@ -95,7 +95,7 @@ void SpeedControl::adjustPWM()
 	int error = _setPoint - speed;
 	_iTerm += (_kI * (double)error);
 	double dInput = speed - _lastSpeed;
-	int adjustment = (_kP * (double)error) + _iTerm + (_kD * dInput);
+	int adjustment = (_kP * (double)error) + _iTerm - (_kD * dInput);
 	_pwm += adjustment;
 	constrainPWM();
 	_motor->setPWM(_pwm);
