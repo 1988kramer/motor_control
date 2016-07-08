@@ -72,10 +72,9 @@ void SpeedControl::setSpeed(int speed)
 	{
 		_motor->setFree();
 	}
-	if (speed < _minSpeed)
-		_setPoint = _minSpeed;
-	else
-		_setPoint = speed;
+	if (speed < _minSpeed && speed > 0)
+		speed = _minSpeed;
+	_setPoint = speed;
 }
 
 // returns the distance rotated by the motor's output shaft in degrees
