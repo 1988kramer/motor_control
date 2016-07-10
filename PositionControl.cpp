@@ -66,7 +66,7 @@ void PositionControl::adjustPWM()
 
 		int newSpeed = (double)_error * _kP;
 		newSpeed = constrainSpeed(newSpeed);
-		if (_error == 0)
+		if (_error < 2 && _error > -2)
 		{
 			_positioning = false;
 			_speed = 0;
