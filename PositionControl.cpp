@@ -18,7 +18,6 @@ PositionControl::PositionControl(SpeedControl *speedControl)
 	_distance = 0;
 	_kP = defaultKP;
 	_positioning = false;
-	_rotateDegrees = 0;
 	_error = 0;
 	_speed = 0;
 }
@@ -36,8 +35,6 @@ void PositionControl::setSpeed(int speed)
 
 // rotates motor by the specified number of degrees at the 
 // specified speed
-// motors cannot rotate simultaneously
-// motors do not stop when rotating backward
 void PositionControl::rotate(int degrees, int speed)
 {
 	if (!_positioning)
@@ -45,11 +42,14 @@ void PositionControl::rotate(int degrees, int speed)
 		if (degrees < 0) 
 		{
 			speed *= -1;
+			//degrees *= -1;
+		}
+		if (speed < 0)
+		{
 			degrees *= -1;
 		}
 		_distance += _speedControl->getDistance();
 		_error = degrees;
-		_rotateDegrees = degrees;
 		_speed = speed;
 		_positioning = true;
 	}
@@ -61,23 +61,19 @@ void PositionControl::adjustPWM()
 	{
 		int thisDistance = _speedControl->getDistance();
 		_distance += thisDistance;
-		if (thisDistance < 0) thisDistance *= -1;
+		// if (thisDistance < 0) thisDistance *= -1;
 		_error -= thisDistance;
 
 		int newSpeed = (double)_error * _kP;
-		if (newSpeed < _speed)
-		{
-			_speed = newSpeed;
-		}
-		
-		if (_error == 0 && thisDistance == 0)
+		newSpeed = constrainSpeed(newSpeed);
+		if (_error == 0)
 		{
 			_positioning = false;
 			_speed = 0;
-			_rotateDegrees = 0;
+			newSpeed = 0;
 			_error = 0;
 		}
-		_speedControl->setSpeed(_speed);
+		_speedControl->setSpeed(newSpeed);
 	}
 	_speedControl->adjustPWM();
 }
@@ -88,4 +84,16 @@ int PositionControl::getDistance()
 	int tempDistance = _distance;
 	_distance = 0;
 	return tempDistance;
+}
+
+int PositionControl::constrainSpeed(int newSpeed)
+{
+	if (_speed > 0)
+	{
+		return (newSpeed > _speed)? _speed : newSpeed;
+	}
+	else
+	{
+		return (newSpeed < _speed)? _speed : newSpeed;
+	}
 }
