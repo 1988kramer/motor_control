@@ -10,7 +10,7 @@
 //#include<Motor.h>
 //#include<Encoder.h>
 
-const double defaultKP = 1;
+const double defaultKP = 2.0;
 
 PositionControl::PositionControl(SpeedControl *speedControl)
 {
@@ -18,6 +18,7 @@ PositionControl::PositionControl(SpeedControl *speedControl)
 	_distance = 0;
 	_kP = defaultKP;
 	_positioning = false;
+	_rotateDegrees = 0;
 	_error = 0;
 	_speed = 0;
 }
@@ -48,6 +49,7 @@ void PositionControl::rotate(int degrees, int speed)
 		}
 		_distance += _speedControl->getDistance();
 		_error = degrees;
+		_rotateDegrees = degrees;
 		_speed = speed;
 		_positioning = true;
 	}
@@ -61,15 +63,18 @@ void PositionControl::adjustPWM()
 		_distance += thisDistance;
 		if (thisDistance < 0) thisDistance *= -1;
 		_error -= thisDistance;
-		int adjustment = (double)_error * _kP;
-		if (_error < _speed && adjustment < _speed)
+
+		int newSpeed = (double)_error * _kP;
+		if (newSpeed < _speed)
 		{
-			_speed -= adjustment;
+			_speed = newSpeed;
 		}
-		if (_error <= 0)
+		
+		if (_error == 0 && thisDistance == 0)
 		{
 			_positioning = false;
 			_speed = 0;
+			_rotateDegrees = 0;
 			_error = 0;
 		}
 		_speedControl->setSpeed(_speed);

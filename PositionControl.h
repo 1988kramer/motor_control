@@ -21,7 +21,7 @@ public:
 	void adjustPWM();
 private:
 	SpeedControl *_speedControl;
-	int _error, _speed;
+	int _error, _speed, _rotateDegrees;
 	long _distance;
 	double _kP;
 	bool _positioning;
