@@ -7,8 +7,6 @@
 #include"Arduino.h"
 #include<PositionControl.h>
 #include<SpeedControl.h>
-//#include<Motor.h>
-//#include<Encoder.h>
 
 const double defaultKP = 2.0;
 
@@ -61,7 +59,6 @@ void PositionControl::adjustPWM()
 	{
 		int thisDistance = _speedControl->getDistance();
 		_distance += thisDistance;
-		// if (thisDistance < 0) thisDistance *= -1;
 		_error -= thisDistance;
 
 		int newSpeed = (double)_error * _kP;
