@@ -16,9 +16,11 @@ public:
 	void update();
 private:
 	void updatePosition();
+	void findSpeeds(int speed, int radius, int &leftSpeed, int &rightSpeed);
 	int _wheelCirc; // circumference of wheels in millimeters
 	int _wheelDistance; // distance between wheels in 
 	int _xPosition, _yPosition;
+	double _theta; // in radians
 	double _degreesPerMillimeter;
 	PositionControl *_leftWheel;
 	PositionControl *_rightWheel;

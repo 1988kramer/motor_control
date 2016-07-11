@@ -1,9 +1,12 @@
 // DifferentialDrive
 // by Andrew Kramer
 
+// This class is completely untested!!!
+
 #include"Arduino.h"
 #include<PositionControl.h>
 #include<DifferentialDrive.h>
+#include<math.h>
 
 DifferentialDrive::DifferentialDrive(PositionControl *lhWheel, 
 								 PositionControl *rhWheel,
@@ -13,10 +16,40 @@ DifferentialDrive::DifferentialDrive(PositionControl *lhWheel,
 	_rightWheel = rhWheel;
 	_wheelCirc = wheelCirc;
 	_wheelDistance = wheelDistance;
+	_xPosition = 0;
+	_yPosition = 0;
+	_theta = 0;	
 	_degreesPerMillimeter = (double)wheelCirc / 360.0;
 }
 
 void DifferentialDrive::drive(int speed, int radius)
+{
+	int leftSpeed, rightSpeed;
+	findSpeeds(speed, radius, &leftSpeed, &rightSpeed);
+
+	_leftWheel->setSpeed(leftSpeed);
+	_rightWheel->setSpeed(rightSpeed);
+}
+
+void DifferentialDrive::drive(int speed, int radius, int distance)
+{
+	int leftSpeed, rightSpeed;
+	findSpeeds(speed, radius, &leftSpeed, &rightSpeed);
+
+	// this definitely doesn't correctly control turning direction 
+	double phi = (double)distance / (double)radius;
+	int dRight = phi * (radius - (_wheelDistance / 2));
+	int dLeft = phi * (radius + (_wheelDistance / 2));
+
+	_leftWheel->rotate(leftSpeed, dLeft);
+	_rightWheel->rotate(rightSpeed, dRight);
+}
+
+// finds speeds for bot to drive in a certain radius
+// not sure if it will accurately control direction
+// and I haven't defined the coordinate system
+void DifferentialDrive::findSpeeds(int speed, int radius, 
+									int &leftSpeed, int &rightSpeed)
 {
 	// calculate speed differential
 	double botAngularVelocity = (double)speed / (double)radius;
@@ -27,16 +60,8 @@ void DifferentialDrive::drive(int speed, int radius)
 	int rightTangential = speed - speedDifferential;
 
 	// calculate angular speeds for left and right wheels
-	int leftWheelAngular = leftTangential * _degreesPerMillimeter;
-	int rightWheelAngular = rightTangential * _degreesPerMillimeter;
-
-	_leftWheel->setSpeed(leftWheelAngular);
-	_rightWheel->setSpeed(rightWheelAngular);
-}
-
-void DifferentialDrive::drive(int speed, int radius, int distance)
-{
-
+	int leftSpeed = leftTangential * _degreesPerMillimeter;
+	int rightSpeed = rightTangential * _degreesPerMillimeter;
 }
 
 void DifferentialDrive::update()
@@ -48,6 +73,12 @@ void DifferentialDrive::update()
 
 void DifferentialDrive::updatePosition()
 {
-
+	double dLeft = _leftWheel->getDistance();
+	double dRight = _rightWheel->getDistance();
+	double dCenter = (dLeft + dRight) / 2;
+	double phi = (dLeft + dRight) / (double)_wheelDistance;
+	_theta += phi;
+	_xPosition += dCenter * math.cos(_theta);
+	_yPosition += dCenter * math.sin(_theta);
 }
 
