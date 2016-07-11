@@ -38,8 +38,8 @@ void DifferentialDrive::drive(int speed, int radius, int distance)
 
 	// this definitely doesn't correctly control turning direction 
 	double phi = (double)distance / (double)radius;
-	int dRight = phi * (radius - (_wheelDistance / 2));
-	int dLeft = phi * (radius + (_wheelDistance / 2));
+	int dRight = phi * ((double)radius - ((double)_wheelDistance / 2.0));
+	int dLeft = phi * ((double)radius + ((double)_wheelDistance / 2.0));
 
 	_leftWheel->rotate(leftSpeed, dLeft);
 	_rightWheel->rotate(rightSpeed, dRight);
