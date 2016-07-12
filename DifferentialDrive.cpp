@@ -97,13 +97,8 @@ void DifferentialDrive::updatePosition()
 {
 	double dLeft = _leftWheel->getDistance();
 	double dRight = _rightWheel->getDistance();
-/*
-	Serial.print(dLeft);
-	Serial.print(", ");
-	Serial.println(dRight);
-*/
 	double dCenter = (dLeft + dRight) / 2;
-	double phi = (dLeft + dRight) / (double)_wheelDistance;
+	double phi = (dRight - dLeft) / (double)_wheelDistance;
 	_theta += phi;
 	_xPosition += dCenter * cos((double)_theta);
 	_yPosition += dCenter * sin((double)_theta);
