@@ -20,7 +20,7 @@ public:
 	void setKP(double kP);
 	void adjustPWM();
 private:
-	int constrainSpeed(int &newSpeed);
+	void constrainSpeed(int &newSpeed);
 	SpeedControl *_speedControl;
 	int _error, _speed;
 	long _distance;
