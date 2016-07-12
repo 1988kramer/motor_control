@@ -61,7 +61,7 @@ void PositionControl::adjustPWM()
 		_error -= thisDistance;
 
 		int newSpeed = (double)_error * _kP;
-		newSpeed = constrainSpeed(newSpeed);
+		constrainSpeed(newSpeed);
 		if (_error < 2 && _error > -2)
 		{
 			_positioning = false;
@@ -82,14 +82,7 @@ int PositionControl::getDistance()
 	return tempDistance;
 }
 
-int PositionControl::constrainSpeed(int newSpeed)
+int PositionControl::constrainSpeed(int &newSpeed)
 {
-	if (_speed > 0)
-	{
-		return (newSpeed > _speed)? _speed : newSpeed;
-	}
-	else
-	{
-		return (newSpeed < _speed)? _speed : newSpeed;
-	}
+	if (abs(_speed) < abs(newSpeed)) newSpeed = _speed;
 }
