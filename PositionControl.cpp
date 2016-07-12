@@ -40,7 +40,6 @@ void PositionControl::rotate(int degrees, int speed)
 		if (degrees < 0) 
 		{
 			speed *= -1;
-			//degrees *= -1;
 		}
 		if (speed < 0)
 		{
