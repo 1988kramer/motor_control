@@ -78,6 +78,13 @@ void DifferentialDrive::findSpeeds(int speed, int radius,
 	}
 }
 
+void DifferentialDrive::getPosition(int &x, int &y, double &theta)
+{
+	x = _xPosition;
+	y = _yPosition;
+	theta = _theta;
+}
+
 void DifferentialDrive::update()
 {
 	_leftWheel->adjustPWM();
@@ -85,6 +92,7 @@ void DifferentialDrive::update()
 	updatePosition();
 }
 
+// still isn't working
 void DifferentialDrive::updatePosition()
 {
 	double dLeft = _leftWheel->getDistance();

@@ -14,6 +14,7 @@ public:
 	DifferentialDrive(PositionControl*, PositionControl*, int, int);
 	void drive(int speed, int radius);
 	void drive(int speed, int radius, int distance);
+	void getPosition(int &x, int &y, double &theta);
 	void update();
 private:
 	void updatePosition();

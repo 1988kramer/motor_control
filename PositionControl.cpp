@@ -65,8 +65,6 @@ void PositionControl::adjustPWM()
 		_distance += thisDistance;
 		_error -= thisDistance;
 
-		Serial.println(_error);
-
 		int newSpeed = (double)_error * _kP;
 		constrainSpeed(newSpeed);
 		if (_error < 2 && _error > -2)
