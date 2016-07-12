@@ -59,10 +59,10 @@ void PositionControl::rotate(int degrees, int speed)
 
 void PositionControl::adjustPWM()
 {
+	int thisDistance = _speedControl->getDistance();
+	_distance += thisDistance;
 	if (_positioning)
 	{
-		int thisDistance = _speedControl->getDistance();
-		_distance += thisDistance;
 		_error -= thisDistance;
 
 		int newSpeed = (double)_error * _kP;
