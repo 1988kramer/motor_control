@@ -37,13 +37,18 @@ void PositionControl::rotate(int degrees, int speed)
 {
 	if (!_positioning)
 	{
-		if (degrees < 0) 
+		if (degrees < 0 && speed > 0) 
 		{
 			speed *= -1;
 		}
-		if (speed < 0)
+		else if (speed < 0 && degrees > 0)
 		{
 			degrees *= -1;
+		}
+		else if (speed < 0 && degrees < 0)
+		{
+			degrees *= -1;
+			speed *= -1;
 		}
 		_distance += _speedControl->getDistance();
 		_error = degrees;
@@ -59,6 +64,8 @@ void PositionControl::adjustPWM()
 		int thisDistance = _speedControl->getDistance();
 		_distance += thisDistance;
 		_error -= thisDistance;
+
+		Serial.println(_error);
 
 		int newSpeed = (double)_error * _kP;
 		constrainSpeed(newSpeed);
