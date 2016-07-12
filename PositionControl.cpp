@@ -87,7 +87,7 @@ int PositionControl::getDistance()
 	return tempDistance;
 }
 
-int PositionControl::constrainSpeed(int &newSpeed)
+void PositionControl::constrainSpeed(int &newSpeed)
 {
 	if (abs(_speed) < abs(newSpeed)) newSpeed = _speed;
 }
