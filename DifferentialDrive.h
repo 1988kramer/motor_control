@@ -12,13 +12,14 @@ class DifferentialDrive
 {
 public:
 	DifferentialDrive(PositionControl*, PositionControl*, int, int);
-	void drive(int speed, int radius);
-	void drive(int speed, int radius, int distance);
+	void drive(int translational, double angular);
+	void drive(int translational, double angular, int distance);
 	void getPosition(int &x, int &y, double &theta);
 	void update();
 private:
 	void updatePosition();
-	void findSpeeds(int speed, int radius, int &leftSpeed, int &rightSpeed);
+	void findSpeeds(int translational, double angular, 
+					int &leftSpeed, int &rightSpeed);
 	int _wheelCirc; // circumference of wheels in millimeters
 	int _wheelDistance; // distance between wheels in 
 	int _xPosition, _yPosition;
