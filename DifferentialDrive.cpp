@@ -8,7 +8,7 @@
 #include<DifferentialDrive.h>
 #include<math.h>
 
-const double pi = 3.14159;
+const double pi = 3.141592;
 
 DifferentialDrive::DifferentialDrive(PositionControl *lhWheel, 
 								 PositionControl *rhWheel,
@@ -38,7 +38,7 @@ void DifferentialDrive::drive(int translational, double angular, int distance)
 	int leftSpeed, rightSpeed;
 	findSpeeds(translational, angular, leftSpeed, rightSpeed);
 
-	double radius = abs((double)translational / angular);
+	double radius = (double)translational / angular;
 	double phi = (double)distance / (double)radius;
 	int distanceDiff = phi * ((double)_wheelDistance / 2.0);
 	int leftDistance = distance - distanceDiff;
@@ -81,19 +81,29 @@ void DifferentialDrive::update()
 {
 	_leftWheel->adjustPWM();
 	_rightWheel->adjustPWM();
-	//updatePosition();
+	updatePosition();
 }
 
-// still isn't working
+// seems to be working but not thoroughly tested
 void DifferentialDrive::updatePosition()
 {
-	double dLeft = _leftWheel->getDistance();
-	double dRight = _rightWheel->getDistance();
+	double leftDegrees = _leftWheel->getDistance();
+	double rightDegrees = _rightWheel->getDistance();
+	double dLeft = leftDegrees / _degreesPerMillimeter;
+	double dRight = rightDegrees / _degreesPerMillimeter;
 	double dCenter = (dLeft + dRight) / 2.0;
 	double phi = (dRight - dLeft) / (double)_wheelDistance;
 	_theta += phi;
 	if (_theta > 2.0 * pi) _theta -= 2.0 * pi;
+	if (_theta < 0.0) _theta += 2.0 * pi;
 	_xPosition += dCenter * cos(_theta);
 	_yPosition += dCenter * sin(_theta);
+}
+
+void DifferentialDrive::resetPosition()
+{
+	_xPosition = 0;
+	_yPosition = 0;
+	_theta = 0.0;
 }
 

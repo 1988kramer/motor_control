@@ -15,6 +15,7 @@ public:
 	void drive(int translational, double angular);
 	void drive(int translational, double angular, int distance);
 	void getPosition(int &x, int &y, double &theta);
+	void resetPosition();
 	void update();
 private:
 	void updatePosition();
