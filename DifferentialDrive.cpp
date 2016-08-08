@@ -18,8 +18,8 @@ DifferentialDrive::DifferentialDrive(PositionControl *lhWheel,
 	_rightWheel = rhWheel;
 	_wheelCirc = wheelCirc;
 	_wheelDistance = wheelDistance;
-	_xPosition = 0;
-	_yPosition = 0;
+	_xPosition = 0.0;
+	_yPosition = 0.0;
 	_theta = 0.0;	
 	_degreesPerMillimeter = 360.0 / (double)wheelCirc;
 }
@@ -70,7 +70,7 @@ void DifferentialDrive::findSpeeds(int translational, double angular,
 	rightSpeed = (double)rightTangential * _degreesPerMillimeter;
 }
 
-void DifferentialDrive::getPosition(int &x, int &y, double &theta)
+void DifferentialDrive::getPosition(double &x, double &y, double &theta)
 {
 	x = _xPosition;
 	y = _yPosition;
@@ -79,6 +79,7 @@ void DifferentialDrive::getPosition(int &x, int &y, double &theta)
 
 void DifferentialDrive::update()
 {
+	sei();
 	_leftWheel->adjustPWM();
 	_rightWheel->adjustPWM();
 	updatePosition();

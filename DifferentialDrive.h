@@ -14,7 +14,7 @@ public:
 	DifferentialDrive(PositionControl*, PositionControl*, int, int);
 	void drive(int translational, double angular);
 	void drive(int translational, double angular, int distance);
-	void getPosition(int &x, int &y, double &theta);
+	void getPosition(double &x, double &y, double &theta);
 	void resetPosition();
 	void update();
 private:
@@ -23,8 +23,7 @@ private:
 					int &leftSpeed, int &rightSpeed);
 	int _wheelCirc; // circumference of wheels in millimeters
 	int _wheelDistance; // distance between wheels in 
-	int _xPosition, _yPosition;
-	double _theta; // in radians
+	double _xPosition, _yPosition, _theta; 
 	double _degreesPerMillimeter;
 	PositionControl *_leftWheel;
 	PositionControl *_rightWheel;
