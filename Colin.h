@@ -18,7 +18,7 @@
 #define LH_DIR2 12 // direction control for left hand motor AIN2 pin on motor controller
 
 // gain values for PID motor control
-const double kP = 0.025, kI = 0.0008, kD = 0.0005;
+const double kP = 0.028, kI = 0.001, kD = 0.0006;
 
 // delta T for speed calculation and PID adjustment
 const long deltaT = 50000;
